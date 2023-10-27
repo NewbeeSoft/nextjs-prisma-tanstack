@@ -1,0 +1,37 @@
+services:
+  nextjs:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=
+      - POSTGRES_URL=
+      - POSTGRES_URL_
+      - AUTH_SECRET=
+    depends_on:
+      - db
+    networks:
+      - newbee
+    #command: npm run start # Use "npm start" if you want to run in production mode
+
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 
+      POSTGRES_DB: newbee
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - newbee
+
+volumes:
+  postgres_data:
+
+networks:
+  newbee:
+    driver: bridge 
